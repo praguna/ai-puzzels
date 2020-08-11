@@ -44,14 +44,14 @@ def search(src, target, visited_states, g):
         if scores[i] == min_score: selected_moves.append(adj[i])
     for move in selected_moves:
         if search(move, target, visited_states, g + 1): return visited_states
-    return 0
+    return None
 
 
 def solve(src, target):
     visited_states = []
     res = search(src, target, visited_states, 0)
 
-    if type(res) != type(int()):
+    if res:
         i = 0
         for state in res:
             print('move :', i + 1, end="\n")

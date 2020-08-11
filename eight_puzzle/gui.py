@@ -16,8 +16,8 @@ class App(tk.Frame):
         parent.title("8 puzzle problem")
         self.label = tk.Label(self, text="Let's solve the eight puzzle Problem", font=('Verdana', 15, 'bold'))
         self.label.pack(side=tk.TOP)
-        self.puzzle_src = Puzzle(self, tile_color="red")
-        self.puzzle_dest = Puzzle(self, tile_color="blue")
+        self.puzzle_src = Puzzle(self, {"tile_color":"red", "text":"Source Configuration"})
+        self.puzzle_dest = Puzzle(self, {"tile_color":"red", "text":"Destination Configuration"})
         self.draw_separator()
 
     def draw_separator(self):
@@ -26,13 +26,14 @@ class App(tk.Frame):
 
 
 class Puzzle(tk.Frame):
-    def __init__(self, parent, tile_color, **kw):
+    def __init__(self, parent, config, **kw):
         super().__init__(parent, **kw)
         self.b = [[], [], []]
         self.algo_value = [-1] * 9
         self.index = 1
-        self.tile_color = tile_color
+        self.config = config
         self.draw_puzzle()
+        tk.Label(parent, text=config["text"], font=('Verdana', 10, 'bold'), pady = 10).pack()
         self.pack(pady=40)
 
     def draw_puzzle(self):
@@ -42,24 +43,30 @@ class Puzzle(tk.Frame):
                 self.b[i][j].config(command=lambda row=i, col=j: self.fill(row, col))
                 self.b[i][j].grid(row=i, column=j)
 
-    def set_state(self, state):
-        for i in range(3):
-            for j in range(3):
-                self.b[i][j].config(state=state)
+    def set_state(self, move:list):
+        curr_row, curr_col = self.get_corr(self.algo_value.index(-1))
+        new_row, new_col = self.get_corr(move.index(-1))
+        self.b[curr_row][curr_col], self.b[new_row][new_col] = self.b[new_row][new_col], self.b[curr_row][curr_col]
+        self.algo_value = move[:]
 
     def mark_tile(self):
         index = self.algo_value.index(-1)
-        row, col = index // 3, index % 3
-        self.b[row][col].config(bg=self.tile_color)
+        row, col = self.get_corr(index)
+        self.b[row][col].config(bg=self.config["tile_color"], state=tk.DISABLED)
 
     def button(self):
         return tk.Button(self, bd=5, width=2, font=('arial', 30, 'bold'))
 
     def fill(self, i, j):
-        self.b[i][j].config(text=(self.index))
+        self.b[i][j].config(text=self.index, state = tk.DISABLED, bg="black", fg="white")
         self.algo_value[i * 3 + j] = self.index
         self.index += 1
         if self.index == 9:
-            self.set_state(tk.DISABLED)
             self.mark_tile()
             messagebox.showinfo("Value input to algorithm set to : ",str(self.algo_value))
+
+    def get_corr(self, index):
+        return index // 3, index % 3
+
+    def is_set(self):
+        return self.index == 9
