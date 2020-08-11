@@ -36,7 +36,7 @@ def search(src, target, visited_states, g):
     if src == target: return visited_states
     visited_states.append(src),
     adj = possible_moves(src, visited_states)
-    scores = []
+    scores = [1e7]
     selected_moves = []
     for move in adj: scores.append(h(move) + g)
     min_score = min(scores)
@@ -72,11 +72,11 @@ def display(state):
             print(state[i], end="\t")
     print(end="\n")
 
-
-print('Initial State :')
-display(src)
-print('Goal State :')
-display(target)
-print('*' * 10)
-solve(src, target)
+def run():
+    print('Initial State :')
+    display(src)
+    print('Goal State :')
+    display(target)
+    print('*' * 10)
+    solve(src, target)
 
