@@ -5,6 +5,8 @@ from time import sleep
 from tkinter import messagebox
 
 from eight_puzzle.algorithm import possible_moves, h
+import sys
+sys.setrecursionlimit(10000)
 
 
 def build_gui(dim):
