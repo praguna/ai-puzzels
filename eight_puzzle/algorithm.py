@@ -36,10 +36,11 @@ def search(src, target, visited_states, g):
     if src == target: return visited_states
     visited_states.append(src),
     adj = possible_moves(src, visited_states)
-    scores = [1e7]
+    scores = []
     selected_moves = []
     for move in adj: scores.append(h(move) + g)
-    min_score = min(scores)
+    if len(scores) == 0: min_score = 0
+    else: min_score = min(scores)
     for i in range(len(adj)):
         if scores[i] == min_score: selected_moves.append(adj[i])
     for move in selected_moves:
