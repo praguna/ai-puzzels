@@ -53,7 +53,7 @@ class App(tk.Frame):
 
     def algo_update(self):
         while True:
-            while not (self.puzzle_src.is_set() and self.puzzle_dest.is_set()) or self.done:
+            while not self.puzzle_src.is_set() or not self.puzzle_dest.is_set() or self.done:
                 if self.stop is True: self.done = False
             self.stop = False
             visited_states = []
