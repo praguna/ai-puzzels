@@ -1,3 +1,5 @@
+from queue import Queue
+
 src = [1, 2, 3, -1, 4, 5, 6, 7, 8]
 target = [1, 2, 3, 4, 5, 8, -1, 6, 7]
 
@@ -39,8 +41,10 @@ def search(src, target, visited_states, g):
     scores = []
     selected_moves = []
     for move in adj: scores.append(h(move) + g)
-    if len(scores) == 0: min_score = 0
-    else: min_score = min(scores)
+    if len(scores) == 0:
+        min_score = 0
+    else:
+        min_score = min(scores)
     for i in range(len(adj)):
         if scores[i] == min_score: selected_moves.append(adj[i])
     for move in selected_moves:
@@ -48,9 +52,33 @@ def search(src, target, visited_states, g):
     return None
 
 
-def solve(src, target):
+def bfs_search(src, target, visited_states):
+    q = Queue()
+    q.put((src, 0))
+    while not q.empty():
+        curr, g = q.get()
+        if target == curr: return visited_states
+        visited_states.append(curr)
+        adj = possible_moves(curr, visited_states)
+        scores = []
+        selected_moves = []
+        for move in adj: scores.append(h(move) + g)
+        if len(scores) == 0:
+            min_score = 0
+        else:
+            min_score = min(scores)
+        for i in range(len(adj)):
+            if scores[i] == min_score: selected_moves.append(adj[i])
+        for move in selected_moves: q.put((move, g + 1))
+    return None
+
+
+def solve(src, target, bfs=True):
     visited_states = []
-    res = search(src, target, visited_states, 0)
+    if bfs:
+        res = bfs_search(src, target, visited_states)
+    else:
+        res = search(src, target, visited_states, 0)
 
     if res:
         i = 0
@@ -72,6 +100,7 @@ def display(state):
         else:
             print(state[i], end="\t")
     print(end="\n")
+
 
 def run():
     print('Initial State :')
