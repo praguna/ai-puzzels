@@ -36,7 +36,7 @@ def final_score(curr):
 
 
 def find_best_move(curr, is_ai, v):
-    if is_won(curr): return curr, 1 + final_score(curr) if is_ai else -final_score(curr)-1
+    if is_won(curr): return curr, 1 + final_score(curr) if not is_ai else -final_score(curr)-1 # invert the flag
     if is_draw(curr): return curr, 0
     poss_moves = gen_moves(curr, v)
     b = -10 if is_ai else 10
