@@ -1,3 +1,5 @@
+import random as r
+
 def update_state(curr, r, c, v):
     curr[r * 3 + c] = get_symbol(v)
     return not v
@@ -14,6 +16,7 @@ def gen_moves(curr, v):
         if x == -1:
             poss_moves.append(curr[:])
             poss_moves[-1][i] = s
+    r.shuffle(poss_moves)
     return poss_moves
 
 
@@ -43,9 +46,7 @@ def find_best_move(curr, is_ai, v):
     next_move = None
     for move in poss_moves:
         _, score = find_best_move(move, not is_ai, not v)
-        if score > b and is_ai:
-            next_move, b = move, score
-        elif score < b and not is_ai:
+        if (score > b and is_ai) or (score < b and not is_ai):
             next_move, b = move, score
     return next_move, b
 
