@@ -1,5 +1,6 @@
 import random as r
 
+
 def update_state(curr, r, c, v):
     curr[r * 3 + c] = get_symbol(v)
     return not v
@@ -39,7 +40,7 @@ def final_score(curr):
 
 
 def find_best_move(curr, is_ai, v):
-    if is_won(curr): return curr, 1 + final_score(curr) if not is_ai else -final_score(curr)-1 # invert the flag
+    if is_won(curr): return curr, 1 + final_score(curr) if not is_ai else -final_score(curr) - 1  # invert the flag
     if is_draw(curr): return curr, 0
     poss_moves = gen_moves(curr, v)
     b = -10 if is_ai else 10
@@ -88,7 +89,7 @@ def play():
             print("score : ", s)
             display(b)
         if is_won(b):
-            print("{} has own !".format("Computer" if not x else "Player"))
+            print("{} has won !".format("Computer" if not x else "Player"))
             return
         if is_draw(b):
             print("Match is drawn")
@@ -96,4 +97,5 @@ def play():
         x = not x
 
 
-play()
+if __name__ == "__main__":
+    play()
