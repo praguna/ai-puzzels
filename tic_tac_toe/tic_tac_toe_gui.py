@@ -1,10 +1,10 @@
+import random as r
+import sys
 import tkinter as tk
 import tkinter.ttk as ttk
-import random as r
-from threading import Thread
 from tkinter import messagebox
-from tic_tac_toe.algorithm import get_symbol, find_best_move, update_state, is_draw, is_won
-import sys
+
+from tic_tac_toe.algorithm import get_symbol, find_best_move, update_state, is_draw
 
 sys.setrecursionlimit(10000)
 
